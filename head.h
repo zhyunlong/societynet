@@ -1,19 +1,27 @@
 #pragma once
 #include <iostream>
+#include <string>
 
 #define MAX 100
 
 using namespace std;
 
-typedef struct
+typedef struct user
 {
+
 	int ID;
 	int sex;
 	string name;
-	string birth;
+	int birth;
 }user;
 
 typedef struct 
+{
+	user *elem;
+	int count;
+}HashTable;
+
+typedef struct
 {
 	int net[MAX][MAX];
 	int ID[MAX];
@@ -21,10 +29,5 @@ typedef struct
 	int arcnum;
 }Social_Networking;
 
-typedef struct
-{
-	user *elem; //数据元素存储地址  
-	int count;//当前元素个数  
-}HashTable;
 
-int L = 0;
+
