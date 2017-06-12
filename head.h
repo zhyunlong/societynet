@@ -8,7 +8,6 @@ using namespace std;
 
 typedef struct user
 {
-
 	int ID;
 	int sex;
 	string name;
@@ -29,5 +28,11 @@ typedef struct
 	int arcnum;
 }Social_Networking;
 
+typedef struct 
+{
+	int a[MAX];
+	int top;
+	int number;
+} stack;
 
 
