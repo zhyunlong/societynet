@@ -30,9 +30,7 @@ typedef struct
 
 typedef struct 
 {
-	int a[MAX];
+	double a[MAX];
 	int top;
 	int number;
 } stack;
-
-

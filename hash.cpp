@@ -1,10 +1,10 @@
 #include "head.h"
+#include <string>
 
-using namespace std;
 
 int Hash(int data);
 void insert(HashTable *hashTable, int data);
-int  HashSearch(HashTable *hashTable, int data);
+int  HashSeneth(HashTable *hashTable, int data);
 
 int L = 0;
 
@@ -40,7 +40,7 @@ void insert(HashTable *hashTable, int data)
 	hashTable->elem[Addr].ID = data;
 }
 
-int  HashSearch(HashTable *hashTable, int data)
+int  HashSeneth(HashTable *hashTable, int data)
 {
 	int Addr = Hash(data);
 	while (hashTable->elem[Addr].ID != data)
@@ -63,7 +63,7 @@ void inithashinfo(Social_Networking SN, HashTable *hashTable)
 void showhashinfo(HashTable *hashTable, int id)
 {
 	int Addr;
-	Addr = HashSearch(hashTable, id);
+	Addr = HashSeneth(hashTable, id);
 	cout << "ID为" << id << "的信息是" << endl;
 	cout << "ID为" << hashTable->elem[Addr].ID << endl;
 	cout << "性别" << hashTable->elem[Addr].sex << endl;
@@ -73,7 +73,7 @@ void showhashinfo(HashTable *hashTable, int id)
 void changehashinfo(HashTable *hashTable, int id)
 {
 	int Addr, choose = 0;
-	Addr = HashSearch(hashTable, id);
+	Addr = HashSeneth(hashTable, id);
 	do {
 		cout << "请选择想要修改的信息" << endl;
 		cout << "************************************************************" << endl;
