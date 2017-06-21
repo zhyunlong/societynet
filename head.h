@@ -3,8 +3,11 @@
 #include <string>
 
 #define MAX 100
+#define INFINITY  65535
+
 
 using namespace std;
+
 
 typedef struct user
 {

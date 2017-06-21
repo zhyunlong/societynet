@@ -17,7 +17,6 @@ bool inithash(HashTable *hashTable, int n)//哈希表的初始化
 	for (i = 0; i < L; i++)
 	{
 		hashTable->elem[i].birth = -1;
-		//hashTable->elem[i].name = "Null";
 		hashTable->elem[i].ID = -1;
 		hashTable->elem[i].sex = -1;
 	}
@@ -66,7 +65,7 @@ void showhashinfo(HashTable *hashTable, int id)
 	Addr = HashSeneth(hashTable, id);
 	cout << "ID为" << id << "的信息是" << endl;
 	cout << "ID为" << hashTable->elem[Addr].ID << endl;
-	cout << "性别" << hashTable->elem[Addr].sex << endl;
+	cout << "性别" << hashTable->elem[Addr].sex << "             (-1为维赋值 0为男 1为女)" <<endl;
 	cout << "生日为" << hashTable->elem[Addr].birth << endl;
 }
 
@@ -77,10 +76,9 @@ void changehashinfo(HashTable *hashTable, int id)
 	do {
 		cout << "请选择想要修改的信息" << endl;
 		cout << "************************************************************" << endl;
-		cout << "***                       1.修改昵称                     ***" << endl;
-		cout << "***                 2.修改性别（0为男，1为女）           ***" << endl;
-		cout << "***                       3.修改生日                     ***" << endl;
-		cout << "***                       4.返回                         ***" << endl;
+		cout << "***                 1.修改性别（0为男，1为女）           ***" << endl;
+		cout << "***                       2.修改生日                     ***" << endl;
+		cout << "***                       3.返回                         ***" << endl;
 		cout << "************************************************************" << endl;
 		cin >> choose;
 		switch (choose)

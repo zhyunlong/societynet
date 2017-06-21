@@ -5,7 +5,6 @@
 #include <algorithm>
 
 
-#define INFINITY  65535
 
 using namespace std;
 
@@ -30,8 +29,10 @@ void initnet(Social_Networking &SN)
 {
 	SN.arcnum = 0;
 	SN.usernum = 0;
-	cout << "请输入网络中用户数量" << endl;
+	cout << "请输入网络中用户数量  返回请输入0" << endl;
 	cin >> SN.usernum;
+	if (SN.usernum == 0)
+		return;
 	for (int i = 0;i < SN.usernum;i++)
 	{
 		SN.ID[i] = -1;
@@ -96,13 +97,19 @@ void printNet(Social_Networking &SN)
 		cout << "用户" << i + 1 << ": " << SN.ID[i];
 	}
 	cout << endl;
-	for (int i = 0;i < SN.usernum;i++)
+	char a;
+	cout << "想要以矩阵形式将网络打印出来吗？  输入Y打印，输入其他返回" << endl;
+	cin >> a;
+	if (a == 'Y')
 	{
-		for (int j = 0;j < SN.usernum;j++)
+		for (int i = 0;i < SN.usernum;i++)
 		{
-			cout <<setw(8) << SN.net[i][j] ;
+			for (int j = 0;j < SN.usernum;j++)
+			{
+				cout << setw(8) << SN.net[i][j];
+			}
+			cout << endl;
 		}
-		cout << endl;
 	}
 }
 
@@ -301,7 +308,7 @@ int analysecircl(Social_Networking SN)
 
 void shortestpath_floyd(Social_Networking sn)
 {
-	int tmp, a, b, c, d, flag = 0;
+	int tmp, flag = 0;
 	for (int i = 0;i < sn.usernum;i++)
 	{
 		for (int j = 0;j < sn.usernum;j++)
@@ -333,7 +340,7 @@ void shortestpath_floyd(Social_Networking sn)
 			}
 		}
 	}
-	cout << "任意两点间最短距离: " << endl;
+	/*cout << "任意两点间最短距离: " << endl;
 	for (int i = 0; i < sn.usernum; i++)
 	{
 		for (int j = 0; j < sn.usernum; j++)
@@ -356,9 +363,37 @@ void shortestpath_floyd(Social_Networking sn)
 			printf(" -> %d\n", w);    
 		}
 		printf("\n");
-	}
+	}*/
 }
 
+void test(Social_Networking sn)
+{
+	cout << "任意两点间最短距离: " << endl;
+	for (int i = 0; i < sn.usernum; i++)
+	{
+		for (int j = 0; j < sn.usernum; j++)
+			cout << setw(2) << final[i][j] << "  ";
+		cout << endl;
+	}
+	cout << "所有的最短路径" << endl;
+	for (int v = 0; v<sn.usernum; ++v)
+	{
+		for (int w = 0; w<sn.usernum; w++)
+		{
+			int k;
+			printf("v%d-v%d weight: %d ", v, w, final[v][w]);
+			k = path[v][w];
+			printf(" path: %d", v);
+			while (k != w)
+			{
+				printf(" -> %d", k);
+				k = path[k][w];
+			}
+			printf(" -> %d\n", w);
+		}
+		printf("\n");
+	}
+}
 
 void degree_centrality(Social_Networking sn)
 {
@@ -385,11 +420,13 @@ void degree_centrality(Social_Networking sn)
 			insertstack(st, degree[j]);
 		}
 	}
+	cout << "关键人物（degree）ID为" << sn.ID[pos] << "的用户" << "（第" << pos + 1 << "个）" << "的用户" << endl;
+	cout << "每个用户的dgree centrality" << endl;
 	for (int i = 0;i < sn.usernum;i++)
 	{
 		cout << degree[i] << "  ";
 	}
-	cout << "关键人物（degree）ID为" << sn.ID[pos] << "的用户" << endl;
+	cout << endl;
 }
 
 void closeness_centrality(Social_Networking sn)
@@ -420,8 +457,14 @@ void closeness_centrality(Social_Networking sn)
 			insertstack(st, closeness[j]);
 		}
 	}
+	cout << "关键人物（closeness_centrality）ID为" << sn.ID[pos] << "的用户" << "（第" << pos + 1 << "个）" << "的用户" << endl;
+	cout << "每个用户的closeness_centrality" << endl;
+	for (int i = 0;i < sn.usernum;i++)
+	{
+		cout << closeness[i] << "  ";
+	}
 	cout << endl;
-	cout << "关键人物（closeness_centrality）ID为" << sn.ID[pos] << "的用户" <<st.a[st.top] << endl;
+
 }
 
 void between_centrality(Social_Networking sn)
@@ -480,33 +523,45 @@ void between_centrality(Social_Networking sn)
 			insertstack(st, between_centrality[j]);
 		}
 	}
-	cout << "关键人物（between_centrality）ID为" << sn.ID[pos] << "的用户" << endl;
+	cout << "关键人物（between_centrality）ID为" << sn.ID[pos] <<"（第"<<pos+1<<"个）"<< "的用户" << endl;
+	cout << "每个用户的between_centrality" << endl;
 	for (int i = 0;i < sn.usernum;i++)
 	{
 		cout << between_centrality[i] << "  ";
 	}
+	cout << endl;
 }
 
 int main()
 {
-	//srand(time(0));
+	srand(time(0));
 	Social_Networking sn;
 	HashTable hash;
 	int choose,id;
+	char a;
 	do
 	{
 		cout << "**************************简单社交网络分析系统************************" << endl;
 		cout << "***                                                                ***" << endl;
 		cout << "***                       1.初始化生成网络                         ***" << endl;
 		cout << "***                       2.用户信息修改                           ***" << endl;
-		cout << "***                       3.打印显示网络（矩阵形式）               ***" << endl;
+		cout << "***                       3.显示网络                               ***" << endl;
 		cout << "***                       4.用户信息查询                           ***" << endl;
 		cout << "***                       5.好友推荐功能                           ***" << endl;
 		cout << "***                       6.网络分析                               ***" << endl;
 		cout << "***                       7.退出                                   ***" << endl;
 		cout << "***                                                                ***" << endl;
 		cout << "**************************简单社交网络分析系统************************" << endl;
+		cout << "请选择功能" << endl;
 		cin >> choose;
+		while (cin.fail())
+		{
+			cin.clear();
+			cin.ignore(100, '\n');
+			cout << "输入有误" << endl;
+			cout << "请重新输入:" << endl;
+			cin >> choose;
+		}
 		switch (choose)
 		{
 		case 1:
@@ -514,30 +569,58 @@ int main()
 			buildNet(sn);
 			inithash(&hash, sn.usernum);
 			inithashinfo(sn, &hash);
+			initvisited(sn);
+			if (analysecircl(sn) > 1)
+			{
+				initvisited(sn);
+				Linknet(sn);
+			}
+			cout << "生成了一个随机连通图" << endl;
+			cout << "输入任意值返回" << endl;
+			cin >> a;
 			break;
 		case 2:
-			cout << "请输入想要展示的用户ID" << endl;
+			cout << "请输入想要展示信息的用户ID。   退出请输入0" << endl;
 			cin >> id;
+			if (id == 0)
+			{
+				break;
+			}
 			while (!idtest(sn, id))
 			{
-				cout << "id输入错误，请重新输入" << endl;
+				cout << "id输入错误，请重新输入。   退出请输入0" << endl;
 				cin >> id;
+				if (id == 0)
+					break;
+			}
+			if (id == 0)
+			{
+				break;
 			}
 			changehashinfo(&hash ,id );
 			break;
 		case 3:
 			printNet(sn);
 			cout << "输入任意值返回" << endl;
-			char a;
 			cin >> a;
 			break;
 		case 4:
-			cout << "请输入想要修改的用户ID" << endl;
+			cout << "请输入想要修改信息的用户ID。   退出请输入0" << endl;
 			cin >> id;
+			if (id == 0)
+			{
+				break;
+			}
 			while (!idtest(sn, id))
 			{
-				cout << "id输入错误，请重新输入" << endl;
+				cout << "id输入错误，请重新输入。   退出请输入0" << endl;
 				cin >> id;
+				if (id == 0)
+					break;
+			}
+			if (id == 0)
+			{
+				break;
 			}
 			showhashinfo(&hash, id);
 			friendlist(sn, id);
@@ -546,36 +629,50 @@ int main()
 			cin >> a;
 			break;
 		case 5:
-			cout << "请输入用户ID" << endl;
+			cout << "请输入想要推荐好友的用户ID。   退出请输入0" << endl;
 			cin >> id;
+			if (id == 0)
+			{
+				break;
+			}
 			while (!idtest(sn, id))
 			{
-				cout << "id输入错误，请重新输入" << endl;
+				cout << "id输入错误，请重新输入。   退出请输入0" << endl;
 				cin >> id;
+				if (id == 0)
+					break;
+			}
+			if (id == 0)
+			{
+				break;
 			}
 			fri(sn, id);
 			cout << "输入任意值返回" << endl;
 			cin >> a;
 			break;
 		case 6:
-			/*initvisited(sn);
-			cout << "网络中的圈子的个数为:" << endl;
-			cout << analysecircl(sn) << "个" << endl;*/
 			closeness_centrality(sn);
 			degree_centrality(sn);
+			cout << endl;
 			between_centrality(sn);
-			printNet(sn);
+			cout << endl;
+			cout << "是否想要检查结果是否正确，若要检查输入Y，输入其他值退出" << endl;
+			cin >> a;
+			if (a != 'Y')
+			{
+				break;
+			}
+			test(sn);
 			cout << "输入任意值返回" << endl;
 			cin >> a;
 			break;
 		case 7:
-			cout << analysecircl(sn) << endl;
-			cin >> a;
 			break;
 		default:
 			cout << "输入有误" << endl;
+			cout << "请重新输入:" << endl;
 			break;
 		}
 		system("cls");
-	} while (choose != 8);
+	} while (choose != 7);
 }
